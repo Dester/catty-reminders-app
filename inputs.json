@@ -8,10 +8,6 @@
     {
       "username": "tester",
       "password": "foobar123"
-    },
-    {
-      "username": "test",
-      "password": "0"
     }
   ]
 }
