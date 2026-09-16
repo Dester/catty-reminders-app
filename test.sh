@@ -8,7 +8,7 @@ BRANCH=$1
 cd "$REPO_DIR"
 
 git fetch origin
-git checkout -B "$BRANCH" "origin/$BRANCH"
+git checkout -f -B "$BRANCH" "origin/$BRANCH"
 echo "Pull origin $BRANCH"
 git pull origin "$BRANCH"
 
