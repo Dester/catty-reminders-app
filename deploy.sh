@@ -10,6 +10,7 @@ rsync -a --delete \
     --exclude='.git' \
     --exclude='.env' \
     --exclude='reminder_db.json' \
+    --exclude='.venv' \
     --exclude='venv' \
     --exclude='__pycache__' \
     --exclude='.pytest_cache' \
