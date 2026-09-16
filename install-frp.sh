@@ -11,14 +11,14 @@
 set -e
 
 # Параметры
-SERVER_ADDR=${1:-"course.prafdin.ru"}
-AUTH_TOKEN=${2:-"mytoken"}
-USERNAME=${3:-"prafdin"}
+SERVER_ADDR=${1:-"course.prafdin.space"}
+AUTH_TOKEN=${2:-"devops"}
+USERNAME=${3:-"nosov"}
 
 echo "🚀 Установка FRP клиента..."
 echo "📋 Параметры:"
 echo "   Сервер: $SERVER_ADDR"
-echo "   Токен: ${AUTH_TOKEN:0:8}***"
+echo "   Токен: ${AUTH_TOKEN:0:4}***"
 echo "   Пользователь: $USERNAME"
 echo ""
 
@@ -30,7 +30,7 @@ if [[ $EUID -ne 0 ]]; then
    echo "   sudo ./install-frp.sh [SERVER_ADDR] [AUTH_TOKEN] [USERNAME]"
    echo ""
    echo "🔧 Примеры:"
-   echo "   sudo ./install-frp.sh course.prafdin.ru mytoken prafdin"
+   echo "   sudo ./install-frp.sh course.prafdin.space mytoken prafdin"
    exit 1
 fi
 
