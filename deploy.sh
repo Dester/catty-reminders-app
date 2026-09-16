@@ -2,4 +2,5 @@
 
 echo "🚀 Начинаем развертывание демо-сайта..."
 
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8181
+nohup uvicorn app.main:app --reload --host 0.0.0.0 --port 8181 \
+    > /tmp/uvicorn.log 2>&1 &
