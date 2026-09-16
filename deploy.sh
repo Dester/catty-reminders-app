@@ -1,9 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e
+echo "🚀 Начинаем развертывание демо-сайта..."
 
-source .venv/bin/activate
+# Проверяем, установлен ли nginx
+if ! command -v nginx &> /dev/null; then
+    echo "❌ nginx не установлен."
+    exit 1
+fi
 
-fuser -k 8181/tcp 2>/dev/null || true
-sleep 1
-nohup uvicorn app.main:app --host 0.0.0.0 --port 8181 &
+# Создаем директорию для сайта
+sudo mkdir -p /var/www/demo
+
+# Копируем файлы
+echo "📁 Копируем файлы сайта..."
+sudo cp index.html /var/www/demo/
+
+# Копируем конфигурацию nginx
+echo "⚙️  Применяем конфигурацию nginx..."
+sudo cp nginx.conf /etc/nginx/sites-available/demo-site
+sudo ln -sf /etc/nginx/sites-available/demo-site /etc/nginx/sites-enabled/
+
+# Проверяем конфигурацию
+echo "🔍 Проверяем конфигурацию nginx..."
+sudo nginx -t
+
+if [ $? -eq 0 ]; then
+    # Перезапускаем nginx
+    echo "🔄 Перезапускаем nginx..."
+    sudo systemctl reload nginx
+    
+    echo "✅ Развертывание завершено успешно!"
+else
+    echo "❌ Ошибка в конфигурации nginx"
+    exit 1
+fi

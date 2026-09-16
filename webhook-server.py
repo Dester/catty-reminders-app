@@ -31,14 +31,13 @@ class WebhookHandler(BaseHTTPRequestHandler):
         # Парсим JSON
         try:
             payload = json.loads(body.decode('utf-8'))
+            self._process_webhook(payload)
 
             # Отвечаем успехом
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(b'{"status": "success"}')
-
-            self._process_webhook(payload)
 
         except json.JSONDecodeError:
             print("❌ Ошибка парсинга JSON")
