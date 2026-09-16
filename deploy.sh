@@ -2,6 +2,7 @@
 
 echo "🚀 Начинаем развертывание демо-сайта..."
 
+<<<<<<< HEAD
 # Проверяем, установлен ли nginx
 if ! command -v nginx &> /dev/null; then
     echo "❌ nginx не установлен."
@@ -34,3 +35,7 @@ else
     echo "❌ Ошибка в конфигурации nginx"
     exit 1
 fi
+=======
+cp -r ./ /home/catty-reminders-app
+systemctl restart catty-reminders-app
+>>>>>>> 15a5775 (fixing problem with autotests)
