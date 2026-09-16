@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
-echo "🚀 Начинаем развертывание catty-reminders-app..."
 
-BRANCH=$1
+APP_DIR="${APP_DIR:-/home/catty-reminders-app}"
+SERVICE="${SERVICE:-catty-reminders-app}"
+SRC_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-APP_DIR="/home/catty-reminders-app"
+mkdir -p "$APP_DIR"
 
+rsync -a --delete \
+    --exclude='.git' \
+    --exclude='.env' \
+    --exclude='reminder_db.json' \
+    --exclude='venv' \
+    --exclude='__pycache__' \
+    --exclude='.pytest_cache' \
+    "$SRC_DIR"/ "$APP_DIR"/
 
-# 1. Обновляем код
-echo "📦 Обновляем код из репозитория..."
-cd $APP_DIR
-git fetch origin
-git checkout $BRANCH
-git pull origin $BRANCH
-
-COMMIT_HASH=$(git rev-parse HEAD)
-echo "Код коммита: $COMMIT_HASH"
-echo "DEPLOY_REF=$COMMIT_HASH" > .env
-sudo /usr/bin/systemctl restart catty-reminders-app
-
-echo "✅ Развертывание завершено!"
+sudo systemctl restart "$SERVICE"
