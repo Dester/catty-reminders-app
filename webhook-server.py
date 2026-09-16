@@ -119,7 +119,6 @@ class WebhookHandler(BaseHTTPRequestHandler):
         print(f"   🚀 ЗАПУСКАЕМ АВТОМАТИЗАЦИЮ:")
         print(f"      - Запуск тестов для ветки {branch}")
         print(f"      - Проверка качества кода")
-        subprocess.run(["git", "pull"], check=True)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             print(f"Временная директория: {tmpdir}")
