@@ -18,7 +18,7 @@ USERNAME=${3:-"nosov"}
 echo "🚀 Установка FRP клиента..."
 echo "📋 Параметры:"
 echo "   Сервер: $SERVER_ADDR"
-echo "   Токен: ${AUTH_TOKEN:0:4}***"
+echo "   Токен: ${AUTH_TOKEN:0:2}****"
 echo "   Пользователь: $USERNAME"
 echo ""
 
