@@ -14,8 +14,8 @@ git pull origin "$BRANCH"
 
 echo "Running tests"
 
-#source .venv/bin/activate
-#echo "Virtual environment activated"
+source .venv/bin/activate
+echo "Virtual environment activated"
 
 echo "Starting temporary app for testing"
 
