@@ -22,8 +22,8 @@ echo "DEPLOY_REF=$CLEAN_REF" > /home/catty-reminders-app/.env.deploy
 chmod 644 /home/catty-reminders-app/.env.deploy
 echo "Deploy ref: $CLEAN_REF"
 
-#source .venv/bin/activate
-#echo "Virtual environment activated"
+source .venv/bin/activate
+echo "Virtual environment activated"
 
 echo "Restarting app..."
 which systemctl
