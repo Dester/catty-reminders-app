@@ -4,28 +4,19 @@ echo "🚀 Начинаем развертывание демо-сайта..."
 
 SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="${APP_DIR}"
-echo "📂 Исходная директория: $SOURCE_DIR"
-echo "📁 Директория приложения: $APP_DIR"
+SERVICE_NAME="catty-reminders-app.service"
 
-'''echo "📁 Копируем файлы сайта..."
-sudo cp index.html /var/www/demo/
+echo "📁 Деплой из $SOURCE_DIR в $APP_DIR"
 
-# Копируем конфигурацию nginx
-echo "⚙️  Применяем конфигурацию nginx..."
-sudo cp nginx.conf /etc/nginx/sites-available/demo-site
-sudo ln -sf /etc/nginx/sites-available/demo-site /etc/nginx/sites-enabled/
+rsync -a --delete \
+  --exclude '.git' \
+  --exclude '.venv' \
+  --exclude 'venv' \
+  --exclude '__pycache__' \
+  --exclude '*.pyc' \
+  "$SOURCE_DIR"/ "$APP_DIR"/
 
-# Проверяем конфигурацию
-echo "🔍 Проверяем конфигурацию nginx..."
-sudo nginx -t
+echo "🔄 Перезапускаем сервис..."
+sudo systemctl restart "$SERVICE_NAME"
 
-if [ $? -eq 0 ]; then
-    # Перезапускаем nginx
-    echo "🔄 Перезапускаем nginx..."
-    sudo systemctl reload nginx
-    
-    echo "✅ Развертывание завершено успешно!"
-else
-    echo "❌ Ошибка в конфигурации nginx"
-    exit 1
-fi'''
+echo "✅ Деплой завершён"
