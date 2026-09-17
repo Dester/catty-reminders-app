@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
 
-echo "🚀 Начинаем развертывание демо-сайта..."
+set -e
 
-SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-APP_DIR="${APP_DIR}"
-SERVICE_NAME="catty-reminders-app.service"
+REPO_DIR="/home/dester/Desktop/catty-reminders-app"
+BRANCH=$1
 
-echo "📁 Копируем файлы..."
+echo "Deploying $BRANCH branch"
 
-rsync -a --delete \
-  --exclude '.git' \
-  --exclude '.venv' \
-  --exclude 'venv' \
-  --exclude '__pycache__' \
-  --exclude '*.pyc' \
-  "$SOURCE_DIR"/ "$APP_DIR"/
 
-echo "🔄 Перезапускаем сервис..."
-sudo systemctl restart "$SERVICE_NAME"
+cd "$REPO_DIR"
+echo "Directory changed to $REPO_DIR"
 
-echo "✅ Деплой завершён"
+git fetch origin
+git checkout -B "$BRANCH" "origin/$BRANCH"
+echo "Pull $BRANCH branch"
+git pull origin "$BRANCH"
+
+CLEAN_REF=$(git rev-parse HEAD | tr -d '\r')
+echo "DEPLOY_REF=$CLEAN_REF" > /tmp/app.env
+echo "DEPLOY_REF=$CLEAN_REF" > /home/dester/Desktop/catty-reminders-app/.env.deploy
+chmod 644 /home/dester/Desktop/catty-reminders-app/.env.deploy
+echo "Deploy ref: $CLEAN_REF"
+
+source .venv/bin/activate
+echo "Virtual environment activated"
+
+echo "Restarting app..."
+which systemctl
+sudo systemctl restart catty-reminders-app.service
+echo "Done"

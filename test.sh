@@ -1,8 +1,36 @@
 #!/usr/bin/env bash
 
-echo "🧪 Running tests..."
+set -e
 
-python3 -m pytest
+REPO_DIR="/home/dester/Desktop/catty-reminders-app"
+BRANCH=$1
 
-echo "🎉 All tests passed!"
-exit 0
+cd "$REPO_DIR"
+
+git fetch origin
+git checkout -B "$BRANCH" "origin/$BRANCH"
+echo "Pull origin $BRANCH"
+git pull origin "$BRANCH"
+
+echo "Running tests"
+
+source .venv/bin/activate
+echo "Virtual environment activated"
+
+echo "Starting temporary app for testing"
+
+uvicorn app.main:app --host 127.0.0.1 --port 8181 > /tmp/catty-test.log 2>&1 &
+APP_PID=$!
+
+sleep 5
+
+echo "Running pytest"
+python3 -m pytest -v
+RESULT=$?
+
+echo "Stopping temporary app"
+kill "$APP_PID" || true
+
+echo "Tests finished"
+
+exit "$RESULT"
