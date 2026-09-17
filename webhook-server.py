@@ -132,7 +132,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
             print(f"      - Запуск тестов...")
             try:
                 result = subprocess.run(
-                    ["./test.sh", branch],
+                    ["./test.sh"],
                     cwd=tmpdir,
                     check=True,
                     capture_output=True,
@@ -143,7 +143,12 @@ class WebhookHandler(BaseHTTPRequestHandler):
 
                 # Только если тесты прошли - запускаем деплой
                 print(f"      - Запуск деплоя...")
-                subprocess.run(["./deploy.sh", branch], cwd=tmpdir, check=True)
+                subprocess.run(
+                    ["./deploy.sh"],
+                    cwd=tmpdir,
+                    check=True,
+                    env={**os.environ, "APP_DIR": os.getcwd()},
+                )
                 print(f"      ✅ Деплой завершен успешно!")
 
             except subprocess.CalledProcessError as e:
