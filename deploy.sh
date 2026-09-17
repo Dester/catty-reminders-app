@@ -6,7 +6,7 @@ SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="${APP_DIR}"
 SERVICE_NAME="catty-reminders-app.service"
 
-echo "📁 Деплой из $SOURCE_DIR в $APP_DIR"
+echo "📁 Копируем файлы..."
 
 rsync -a --delete \
   --exclude '.git' \
