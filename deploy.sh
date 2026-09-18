@@ -5,7 +5,7 @@ echo "🚀 Начинаем развертывание демо-сайта..."
 APP_DIR="/home/dester/Desktop/catty-reminders-app"
 APP_SERVICE="catty-reminders-app.service"
 ENV_FILE="/etc/catty-reminders-app.env"
-DEPLOY_REF="${DEPLOY_REF:-$(git rev-parse --short HEAD)}"
+DEPLOY_REF="${DEPLOY_REF:-$(git rev-parse HEAD)}"
 
 # Копируем файлы
 echo "📁 Деплой $DEPLOY_REF в $APP_DIR"
