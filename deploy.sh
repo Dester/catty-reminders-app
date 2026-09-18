@@ -15,6 +15,7 @@ sudo rsync -a --delete \
   --exclude '__pycache__' \
   --exclude '*.pyc' \
   ./ "$APP_DIR"/
+echo "DEPLOY_REF=$DEPLOY_REF" | sudo tee "$ENV_FILE" >/dev/null
 
 echo "🔄 Перезапускаем сервис..."
 sudo systemctl restart "$APP_SERVICE"
