@@ -14,6 +14,7 @@ set -e
 SERVER_ADDR=${1:-"course.prafdin.space"}
 AUTH_TOKEN=${2:-"devops"}
 USERNAME=${3:-"nosov"}
+SSH_PORT=${4:-"3153"}
 
 echo "🚀 Установка FRP клиента..."
 echo "📋 Параметры:"
@@ -57,13 +58,12 @@ serverPort = 7000
 auth.method = "token"
 auth.token = "$AUTH_TOKEN"
 
-# Прокси для webhook сервера
+# Прокси для ssh
 [[proxies]]
-name = "hook-$USERNAME"
-type = "http"
-localIP = "127.0.0.1"
-localPort = 8080
-customDomains = ["webhook.$USERNAME.$SERVER_ADDR"]
+name = "ssh-$USERNAME"
+type = "tcp"
+localPort = 22
+remotePort = $SSH_PORT
 
 # Прокси для веб-приложения
 [[proxies]]
