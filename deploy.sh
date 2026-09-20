@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 
-echo "🚀 Начинаем развертывание демо-сайта..."
+set -e
 
-APP_DIR="/home/dester/Desktop/catty-reminders-app"
-APP_SERVICE="catty-reminders-app.service"
-ENV_FILE="/etc/catty-reminders-app.env"
-DEPLOY_REF="${DEPLOY_REF:-$(git rev-parse HEAD)}"
-DEPLOY_PORT="${DEPLOY_PORT:-22}"
+DEPLOY_PORT=${DEPLOY_PORT:-22}
+DEPLOY_DIR="/home/dester/Desktop/catty-reminders-app"
 
 echo "Deploying to $DEPLOY_HOST:$DEPLOY_PORT"
 echo "User: $DEPLOY_USER"
 echo "Release branch: $RELEASE_BRANCH"
 
 SSH_OPTIONS="-p $DEPLOY_PORT -o StrictHostKeyChecking=no"
+
 ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
-    cd $APP_DIR
+    set -e
+    
+    cd $DEPLOY_DIR
     
     git fetch origin
-    git checkout -f $RELEASE_HASH
+    git checkout $RELEASE_HASH
     
-    DEPLOY_REF=\"\$(git rev-parse HEAD)\"
-    echo "DEPLOY_REF=\$DEPLOY_REF" > $ENV_FILE
+    DEPLOY_REF=\$(git rev-parse HEAD)
+    echo "DEPLOY_REF=\$DEPLOY_REF" > .env.deploy
     echo "Deployed version: \$DEPLOY_REF"
     
     if [ ! -d ".venv" ]; then
