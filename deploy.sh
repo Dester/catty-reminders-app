@@ -17,10 +17,13 @@ ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
     cd $DEPLOY_DIR
     
     git fetch origin
-    git checkout $RELEASE_HASH
+    git checkout -f $RELEASE_HASH
+    git reset --hard
+    git clean -fd
     
     DEPLOY_REF=\$(git rev-parse HEAD)
-    echo "DEPLOY_REF=\$DEPLOY_REF" > /etc/catty-reminders-app.env
+    echo "DEPLOY_REF=\$DEPLOY_REF" | sudo tee /etc/catty-reminders-app.env > /dev/null
+    sudo chmod 644 /etc/catty-reminders-app.env
     echo "Deployed version: \$DEPLOY_REF"
     
     if [ ! -d ".venv" ]; then
