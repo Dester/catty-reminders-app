@@ -3,7 +3,6 @@
   "secret_key": "Cats are awesome!",
   "users": {
     "heisenberg": "P@ssw0rd",
-    "tester": "foobar123",
-    "qwerty": "12345"
+    "tester": "foobar123"
   }
 }
