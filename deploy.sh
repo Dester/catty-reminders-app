@@ -16,7 +16,7 @@ SSH_OPTIONS="-p $DEPLOY_PORT -o StrictHostKeyChecking=no"
 ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
     set -e
 
-    echo "$DOCKER_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+    echo "$DOCKER_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR^}" --password-stdin
 
     docker pull "$IMAGE"
 
