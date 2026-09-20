@@ -6,7 +6,7 @@ APP_DIR="/home/dester/Desktop/catty-reminders-app"
 APP_SERVICE="catty-reminders-app.service"
 ENV_FILE="/etc/catty-reminders-app.env"
 DEPLOY_REF="${DEPLOY_REF:-$(git rev-parse HEAD)}"
-DEPLOY_PORT=${DEPLOY_PORT:-22}
+DEPLOY_PORT="${DEPLOY_PORT:-22}"
 
 echo "Deploying to $DEPLOY_HOST:$DEPLOY_PORT"
 echo "User: $DEPLOY_USER"
@@ -20,7 +20,7 @@ ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
     git checkout $RELEASE_HASH
     
     DEPLOY_REF=\$(git rev-parse HEAD)
-    echo "DEPLOY_REF=\$DEPLOY_REF" > $ENV_FILE
+    echo "DEPLOY_REF=\$DEPLOY_REF" > \$ENV_FILE
     echo "Deployed version: \$DEPLOY_REF"
     
     if [ ! -d ".venv" ]; then
