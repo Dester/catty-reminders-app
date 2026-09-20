@@ -17,10 +17,10 @@ ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
     cd $APP_DIR
     
     git fetch origin
-    git checkout $RELEASE_HASH
+    git checkout -f $RELEASE_HASH
     
     DEPLOY_REF=\"\$(git rev-parse HEAD)\"
-    echo "DEPLOY_REF=\$DEPLOY_REF" > \$ENV_FILE
+    echo "DEPLOY_REF=\$DEPLOY_REF" > $ENV_FILE
     echo "Deployed version: \$DEPLOY_REF"
     
     if [ ! -d ".venv" ]; then
