@@ -3,7 +3,9 @@
 set -e
 
 DEPLOY_PORT=${DEPLOY_PORT:-22}
-DEPLOY_DIR="/home/dester/Desktop/catty-reminders-app"
+CONTAINER_NAME="catty-reminders-app"
+PORT="8181"
+IMAGE="${IMAGE_NAME,,}:$RELEASE_HASH"
 
 echo "Deploying to $DEPLOY_HOST:$DEPLOY_PORT"
 echo "User: $DEPLOY_USER"
