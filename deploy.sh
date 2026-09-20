@@ -19,7 +19,6 @@ ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
     git fetch origin
     git checkout -f $RELEASE_HASH
     git reset --hard
-    git clean -fd
     
     DEPLOY_REF=\$(git rev-parse HEAD)
     echo "DEPLOY_REF=\$DEPLOY_REF" | sudo tee /etc/catty-reminders-app.env > /dev/null
