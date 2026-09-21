@@ -31,7 +31,7 @@ jobs:
         script: |
           set -e
 
-          echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u dester --password-stdin
+          echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u Dester --password-stdin
 
           docker pull ghcr.io/dester/catty-reminders-app:${{ env.RELEASE_HASH }}
 
