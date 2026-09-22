@@ -21,6 +21,16 @@ jobs:
         echo "RELEASE_HASH=$HASH" >> $GITHUB_ENV
         echo "Release hash: $HASH"
 
+    - name: copy-compose-file
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ vars.DEPLOY_HOST }}
+        username: ${{ vars.DEPLOY_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ vars.DEPLOY_PORT }}
+        source: "docker-compose.yaml"
+        target: "/home/dester/Desktop/catty-reminders-app"
+
     - name: execute-remote-SSH-commands
       uses: appleboy/ssh-action@v1
       with:
@@ -32,8 +42,6 @@ jobs:
           set -e
 
           cd /home/dester/Desktop/catty-reminders-app
-
-          git pull origin lab4
 
           echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u Dester --password-stdin
 
