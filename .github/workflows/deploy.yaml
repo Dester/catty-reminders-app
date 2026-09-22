@@ -19,9 +19,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ vars.HOST }}
-          username: ${{ vars.USER }}
-          port: ${{ vars.PORT }}
+          host: ${{ vars.DEPLOY_HOST }}
+          username: ${{ vars.DEPLOY_USER }}
+          port: ${{ vars.DEPLOY_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -eu
