@@ -24,10 +24,10 @@ jobs:
     - name: execute-remote-SSH-commands
       uses: appleboy/ssh-action@v1
       with:
-        host: ${{ vars.HOST }}
-        username: ${{ vars.USERNAME }}
+        host: ${{ vars.DEPLOY_HOST }}
+        username: ${{ vars.DEPLOY_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ vars.PORT }}
+        port: ${{ vars.DEPLOY_PORT }}
         script: |
           set -e
 
