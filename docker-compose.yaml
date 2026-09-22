@@ -4,7 +4,7 @@ services:
     ports:
       - "8181:8181"
     environment:
-      - DATABASE_URL=mysql://user:pass@db:3306/catty
+      - DATABASE_URL=mysql://user:mypass@db:3306/catty_reminders
     depends_on:
       - db
 
