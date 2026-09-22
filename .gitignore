@@ -1,1 +1,16 @@
-__pycache__
+.venv/
+.env
+.env.deploy
+
+__pycache__/
+*.py[cod]
+*.pyc
+
+*.log
+*.tmp
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db

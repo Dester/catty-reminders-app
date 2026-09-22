@@ -1,41 +1,42 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "🚀 Начинаем развертывание демо-сайта..."
+set -e
 
-<<<<<<< HEAD
-# Проверяем, установлен ли nginx
-if ! command -v nginx &> /dev/null; then
-    echo "❌ nginx не установлен."
-    exit 1
-fi
+DEPLOY_PORT="${DEPLOY_PORT:-22}"
+CONTAINER_NAME="catty-reminders-app"
+PORT="8181"
+IMAGE="${IMAGE_NAME,,}:$RELEASE_HASH"
 
-# Создаем директорию для сайта
-sudo mkdir -p /var/www/demo
+echo "Deploying to $DEPLOY_HOST:$DEPLOY_PORT"
+echo "Image: $IMAGE"
+echo "Release: $RELEASE_HASH"
 
-# Копируем файлы
-echo "📁 Копируем файлы сайта..."
-sudo cp index.html /var/www/demo/
+SSH_OPTIONS="-p $DEPLOY_PORT -o StrictHostKeyChecking=no"
 
-# Копируем конфигурацию nginx
-echo "⚙️  Применяем конфигурацию nginx..."
-sudo cp nginx.conf /etc/nginx/sites-available/demo-site
-sudo ln -sf /etc/nginx/sites-available/demo-site /etc/nginx/sites-enabled/
+ssh $SSH_OPTIONS "$DEPLOY_USER@$DEPLOY_HOST" << EOF
+    set -e
 
-# Проверяем конфигурацию
-echo "🔍 Проверяем конфигурацию nginx..."
-sudo nginx -t
+    echo "$DOCKER_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR^}" --password-stdin
 
-if [ $? -eq 0 ]; then
-    # Перезапускаем nginx
-    echo "🔄 Перезапускаем nginx..."
-    sudo systemctl reload nginx
-    
-    echo "✅ Развертывание завершено успешно!"
-else
-    echo "❌ Ошибка в конфигурации nginx"
-    exit 1
-fi
-=======
-cp -r ./ /home/catty-reminders-app
-systemctl restart catty-reminders-app
->>>>>>> 15a5775 (fixing problem with autotests)
+    docker pull "$IMAGE"
+
+    docker stop "$CONTAINER_NAME" 2>/dev/null || true
+    docker rm   "$CONTAINER_NAME" 2>/dev/null || true
+
+    docker run -d \\
+        --name "$CONTAINER_NAME" \\
+        --restart unless-stopped \\
+        -p $PORT:$PORT \\
+        -e DEPLOY_REF="$RELEASE_HASH" \\
+        "$IMAGE"
+
+    sleep 5
+
+    if docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" | grep -q "$CONTAINER_NAME"; then
+        echo "Deployment completed successfully"
+    else
+        echo "ERROR: container failed to start"
+        docker logs "$CONTAINER_NAME" || true
+        exit 1
+    fi
+EOF
