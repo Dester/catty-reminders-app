@@ -33,6 +33,8 @@ jobs:
 
           cd /home/dester/Desktop/catty-reminders-app
 
+          git pull origin lab4
+
           echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u Dester --password-stdin
 
           docker compose pull
