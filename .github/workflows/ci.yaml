@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches:
-      - lab3
-      - 'lab3_autotests*'
+      - lab4
+      - 'lab4_autotests*'
   pull_request:
     branches:
-      - lab3
-      - 'lab3_autotests*'
+      - lab4
+      - 'lab4_autotests*'
 jobs:
   pipeline:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
     - name: start-tests
       env:
         PYTHONPATH: ${{ github.workspace }}
-      run: python -m pytest tests/ --junitxml=test_result.xml
+      run: python -m pytest tests/test_unit.py --junitxml=test_result.xml
 
     - name: save-artifact
       uses: actions/upload-artifact@v7

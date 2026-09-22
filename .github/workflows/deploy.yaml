@@ -24,24 +24,25 @@ jobs:
     - name: execute-remote-SSH-commands
       uses: appleboy/ssh-action@v1
       with:
-        host: ${{ vars.DEPLOY_HOST }}
-        username: ${{ vars.DEPLOY_USER }}
+        host: ${{ vars.HOST }}
+        username: ${{ vars.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ vars.DEPLOY_PORT }}
+        port: ${{ vars.PORT }}
         script: |
           set -e
 
+          cd /home/dester/Desktop/catty-reminders-app
+
           echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u Dester --password-stdin
 
-          docker pull ghcr.io/dester/catty-reminders-app:${{ env.RELEASE_HASH }}
+          docker compose pull
 
-          docker stop catty-reminders-app || true
-          docker rm catty-reminders-app || true
+          docker compose down
 
-          docker run -d --name catty-reminders-app -p 8181:8181 ghcr.io/dester/catty-reminders-app:${{ env.RELEASE_HASH }}
+          docker compose up -d
           sleep 4
 
-          if docker ps | grep -q catty-reminders-app; then
+          if docker compose ps | grep -q "app.*Up"; then
               echo "Deployment completed successfully"
           else
               echo "ERROR: Application failed to start"
