@@ -1,10 +1,10 @@
 services:
   app:
-    image: ghcr.io/dester/catty-reminders-app:latest
+    image: ghcr.io/victorgolenkov/catty-reminders-app:latest
     ports:
       - "8181:8181"
     environment:
-      - DATABASE_URL=mysql://user:mypass@db:3306/catty_reminders
+      - DATABASE_URL=mysql://user:pass@db:3306/catty
     depends_on:
       - db
 
